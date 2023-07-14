@@ -9,8 +9,9 @@ const uid = require('uid');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+app.set(express.static('public'));
 
-const multer = require('multer');
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
