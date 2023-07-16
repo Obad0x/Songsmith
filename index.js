@@ -5,7 +5,7 @@ const multer = require('multer')
 const {Essentia , EssentiaWASM} = require ('essentia.js')
 const essentia = new Essentia(EssentiaWASM);
 const fs = require('fs');
-const audioDecode = require('audio-decode');
+import decodeAudio from 'audio-decode'
 const port = process.env.PORT ;
 
 
@@ -28,23 +28,24 @@ app.get('/' , (req,res)=>{
 	res.render('index.ejs');
 
 
-}
+});
 
 //route to handle file uploads
 
-app.post('/uploads9/beat', upload.single('audio'), (req,res)=>{
+app.post('/uploads/beat', upload.single('audio'), (req,res)=>{
 
 // get the uploaded file
 
 const file = req.file;
 
+const path = file.path;
 // save the file to the uploads folder
 
-fs.renameSync(file.path, `uploads/${file.originalname}`);
+fs.renameSync(path, `uploads/${file.originalname}`);
 
 
 //using audio-decode to decode the audio
- const decodedaudio = async(file.path)=>{
+ const decodedaudio = async(path)=>{
 
 const buffer = fs.readFileSync(file.path);
 const Audio = await decode(buffer)
@@ -53,7 +54,6 @@ return audioVector;
 }
 
 
-const data = await
 
 });
 
