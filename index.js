@@ -2,10 +2,10 @@ const express = require('express');
 const app = express(); 
 const openai = require('openai')
 const multer = require('multer')
-const uid = require('uid');
 const {Essentia , EssentiaWASM} = require ('essentia.js')
 const essentia = new Essentia(EssentiaWASM);
 const fs = require('fs');
+const audioDecode = require('audio-decode');
 const port = process.env.PORT ;
 
 
@@ -32,7 +32,7 @@ app.get('/' , (req,res)=>{
 
 //route to handle file uploads
 
-app.post('/uploads/beat', upload.single('audio'), (req,res)=>{
+app.post('/uploads9/beat', upload.single('audio'), (req,res)=>{
 
 // get the uploaded file
 
@@ -42,6 +42,18 @@ const file = req.file;
 
 fs.renameSync(file.path, `uploads/${file.originalname}`);
 
+
+//using audio-decode to decode the audio
+ const decodedaudio = async(file.path)=>{
+
+const buffer = fs.readFileSync(file.path);
+const Audio = await decode(buffer)
+const audioVector = essentia.arrayToVector(audio._channelData[0]);
+return audioVector;
+}
+
+
+const data = await
 
 });
 
