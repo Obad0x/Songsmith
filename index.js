@@ -19,30 +19,13 @@ app.set(express.static('public'));
 
 
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
 
 
 
 
-app.get('/', (req,res)=>{
-
-res.send('hello world');
-
-});
-
-app.post('/upload', upload.single('audio'), (req, res) => {
-  res.send('Audio file uploaded successfully');
-});
-
-
-app.listen(3000, ()=> console.log('hello world'));
-
+const decodeAudio = async (filepath: string) => {
+    const buffer = fs.readFileSync(filepath);
+    const audio = await decode(buffer);
+    const audioVector = essentia.arrayToVector(audio._channelData[0]);
+    return audioVector;
+}; 
