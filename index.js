@@ -1,6 +1,6 @@
 //in package.json type is set to module so import statement is used
 
-import express, {NextFunction} from "express"
+import express  from "express"
 const app = express(); 
 import  openai  from 'openai'
 import  multer from 'multer'
@@ -42,7 +42,7 @@ const upload = multer({ storage : storage,
 // decoding 
 
 
-const decodeAudio  = async ( filepath : string ) =>{
+const decodeAudio  = async ( filepath  ) =>{
 
 	const buffer = readFileSync(filepath)
 	const audio = decode(buffer)
