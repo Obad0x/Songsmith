@@ -1,10 +1,12 @@
-const express = require('express');
+//in package.json type is set to module so import statement is used
+
+import 'express', {NextFunction} from "express"
 const app = express(); 
-const openai = require('openai')
-const multer = require('multer')
-const {Essentia , EssentiaWASM} = require ('essentia.js')
+import  openai  from 'openai'
+import  multer from 'multer'
+import {Essentia , EssentiaWASM} from 'essentia.js'
 const essentia = new Essentia(EssentiaWASM);
-const fs = require('fs');
+import fs from 'fs'
 import decodeAudio from 'audio-decode'
 const port = process.env.PORT ;
 
@@ -17,6 +19,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.set(express.static('public'));
 
+// 
 
 //create a new multer instance
 
