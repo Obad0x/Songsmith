@@ -1,5 +1,5 @@
 //in package.json type is set to module so import statement is used
-
+import OpenAIAPI from 'openai'
 import express  from "express"
 const app = express(); 
 import  { Configuration, OpenAIApi }  from 'openai'
@@ -11,7 +11,7 @@ import decode from 'audio-decode'
 import dotenv from 'dotenv'
 dotenv.config();
 const port = process.env.PORT ;
-const configuration = new Configuration({api Key : process.env.OPENAI_API})
+const configuration = new Configuration({apiKey : process.env.OPENAI_API})
 const openAi = new OpenAiAPI(configuration);
 
 const prompt = 'test'
@@ -84,7 +84,18 @@ const path = file.path;
 const data = await  decodeAudio(path)
 
 
+	
+    const danceability = essentia.Danceability(data).danceability;
+    const duration = essentia.Duration(data).duration;
+    const energy = essentia.Energy(data).energy;
 
+    const computedKey = essentia.KeyExtractor(data);
+    const key = KEYS.indexOf(computedKey.key);
+    const mode = computedKey.scale === "major" ? 1 : 0;
+
+    const loudness = essentia.DynamicComplexity(data).loudness;
+    const tempo = essentia.PercivalBpmEstimator(data).bpm;
+ 
 
 
 });
