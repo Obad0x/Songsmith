@@ -2,13 +2,20 @@
 
 import express  from "express"
 const app = express(); 
-import  openai  from 'openai'
+import  { Configuration, OpenAIApi }  from 'openai'
 import  multer from 'multer'
 import {Essentia , EssentiaWASM} from 'essentia.js'
 const essentia = new Essentia(EssentiaWASM);
 import fs from 'fs'
 import decode from 'audio-decode'
+import dotenv from 'dotenv'
+dotenv.config();
 const port = process.env.PORT ;
+const configuration = new Configuration({api Key : process.env.OPENAI_API})
+const openAi = new OpenAiAPI(configuration);
+
+const prompt = 'test'
+
 
 
 
