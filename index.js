@@ -13,7 +13,8 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
- 
+
+const port = process.env.PORT || 3000 
 
 
 
@@ -95,22 +96,19 @@ const data = await  decodeAudio(path)
     const tempo = essentia.PercivalBpmEstimator(data).bpm;
  
 
-try{
-
-	const response = await openai.createCompletion({
-	  model: "text-davinci-003",
-	  prompt: "Say this is a test",
- 	 max_tokens: 7,
- 	 temperature: 0,
-});
-}
-catch (err){
-
-	if (error.response) {
+try {
+  const completion = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: "Hello world",
+  });
+  console.log(completion.data.choices[0].text);
+} catch (error) {
+  if (error.response) {
     console.log(error.response.status);
     console.log(error.response.data);
   } else {
     console.log(error.message);
+  }
 }
 
 
