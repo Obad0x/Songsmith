@@ -1,21 +1,21 @@
 //in package.json type is set to module so import statement is used
-import OpenAIAPI from 'openai'
 import express  from "express"
 const app = express(); 
-import  { Configuration, OpenAIApi }  from 'openai'
-import  multer from 'multer'
+import  multer from 'multer';
 import {Essentia , EssentiaWASM} from 'essentia.js'
 const essentia = new Essentia(EssentiaWASM);
 import fs from 'fs'
 import decode from 'audio-decode'
 import dotenv from 'dotenv'
 dotenv.config();
-const port = process.env.PORT ;
-const configuration = new Configuration({apiKey : process.env.OPENAI_API})
-const openAi = new OpenAiAPI(configuration);
-
-const prompt = 'test'
-
+import { Configuration, OpenAIApi } from "openai";
+const configuration = new Configuration({
+    organization: "org-fO2tNR9Slg1D61b1t1j1wPe6",
+    apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+const response = await openai.listEngines();
+ 
 
 
 
