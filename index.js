@@ -99,9 +99,10 @@ const data = await  decodeAudio(path)
 try {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: "Hello world",
+    prompt: `generate lyrics for me from a beat with danceability value of ${danceability} `,
   });
   console.log(completion.data.choices[0].text);
+
 } catch (error) {
   if (error.response) {
     console.log(error.response.status);
@@ -110,7 +111,6 @@ try {
     console.log(error.message);
   }
 }
-
 
 
 });
