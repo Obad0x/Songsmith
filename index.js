@@ -49,12 +49,16 @@ const upload = multer({ storage : storage,
 
 
 const decodeAudio = async (filepath) => {
-  const audioResponse = await fetch(filepath);
-  const arrayBuffer = await audioResponse.arrayBuffer();
-  const audio = await decode(arrayBuffer);
-  const audioVector = essentia.arrayToVector(audio.channel._channelData[0]);
-  return audioVector;
+  try {
+    const audio = await decode(filepath);
+    const audioVector = essentia.arrayToVector(audio.channel._channelData[0]);
+    return audioVector;
+  } catch (error) {
+    console.error("Error while decoding audio:", error);
+    throw new Error("Unable to decode audio. Unsupported format or invalid file.");
+  }
 };
+
 
 
 
