@@ -48,16 +48,14 @@ const upload = multer({ storage : storage,
 // decoding 
 
 
-const decodeAudio  = async ( filepath  ) =>{
+const decodeAudio = async (filepath) => {
+  const audioResponse = await fetch(filepath);
+  const arrayBuffer = await audioResponse.arrayBuffer();
+  const audio = await decode(arrayBuffer);
+  const audioVector = essentia.arrayToVector(audio.channel._channelData[0]);
+  return audioVector;
+};
 
-	const buffer = readFileSync(filepath)
-	const audio = decode(buffer)
-	const audioVector = essentia.arrayToVector(audio.channel._channelData[0])
-	return audioVector;
-
-
-
-}
 
 
 
@@ -74,46 +72,50 @@ app.post('/uploads/beat', upload.single('audio'),async (req,res)=>{
 
 // get the uploaded file
 
-const file = req.file;
-
-const path = file.path;
-
-//decode the audio
-
-const data = await  decodeAudio(path)
+const file = req.file
 
 
-	
+  // Ensure that the file is available
+  if (!file) {
+    return res.status(400).send("No audio file uploaded.");
+  }
+
+  try {
+    // Decode the audio (await for the decoding to finish)
+    const data = await decodeAudio(file.path);
+
+    // Perform other operations that depend on the 'data' variable
     const danceability = essentia.Danceability(data).danceability;
     const duration = essentia.Duration(data).duration;
     const energy = essentia.Energy(data).energy;
 
-    const computedKey = essentia.KeyExtractor(data);
-    const key = KEYS.indexOf(computedKey.key);
-    const mode = computedKey.scale === "major" ? 1 : 0;
+  
 
-    const loudness = essentia.DynamicComplexity(data).loudness;
-    const tempo = essentia.PercivalBpmEstimator(data).bpm;
- 
+    // Now call OpenAI API using 'data' and 'danceability'
+    try {
+      const completion = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: `generate lyrics for me from a beat with danceability value of ${danceability}`,
+      });
 
-try {
-  const completion = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `generate lyrics for me from a beat with danceability value of ${danceability} `,
-  });
-  console.log(completion.data.choices[0].text);
+      // Get the generated lyrics from the API response
+      const generatedLyrics = completion.data.choices[0].text;
 
-} catch (error) {
-  if (error.response) {
-    console.log(error.response.status);
-    console.log(error.response.data);
-  } else {
-    console.log(error.message);
+      // Respond to the client or do further processing with the generated lyrics
+      res.send(generatedLyrics);
+    } catch (error) {
+      // Handle OpenAI API error
+      console.log(error);
+      res.status(500).send("Error while processing with OpenAI.");
+    }
+  } catch (decodeError) {
+    // Handle decodeAudio error
+    console.log(decodeError);
+    res.status(500).send("Error while decoding audio.");
   }
-}
-
-
 });
+
+
 
 
 
