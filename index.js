@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
   }
 });
 
-ßconst upload = multer({
+const upload = multer({
   storage: storage,
   limits: {
     fileSize: 20 * 1024 * 1024,
@@ -43,9 +43,10 @@ const storage = multer.diskStorage({
 const decodeAudio = async (filepath) => {
     const buffer = fs.readFileSync(filepath);
     const audio = await decode(buffer);
-    const audioVector = essentia.arrayToVector(audio._channelData[0]);
+	const audioBuffer = audio.getChannelData(0)
+    const audioVector = essentia.arrayToVector(audioBuffer);
     return audioVector;
-)}
+}
 
 app.get("/", (req, res) => {
   res.render("index.ejs");
