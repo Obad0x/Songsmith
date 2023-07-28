@@ -4,16 +4,21 @@ import { Essentia, EssentiaWASM } from "essentia.js";
 import fs from "fs";
 import decode from "audio-decode";
 import dotenv from "dotenv";
-import { Configuration, OpenAIApi } from "openai";
+import {Configuration , OpenAIApi } from  'openai' 
+
 
 const app = express();
 dotenv.config();
 
 const essentia = new Essentia(EssentiaWASM);
 
+
 const configuration = new Configuration({
-  apiKey: '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'})
+  apiKey: process.env.API_KEY,
+});
+
 const openai = new OpenAIApi(configuration);
+
 
 const port = process.env.PORT || 3000;
 
@@ -68,10 +73,11 @@ app.post("/uploads/beat", upload.single("audio"), async (req, res) => {
     const energy = essentia.Energy(data).energy;
 
     try {
-      const completion = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `generate lyrics for me from a beat with danceability value of ${danceability}`,
-      });
+      const completion = await api.createCompletion({
+  model: 'text-davinci-003',
+  prompt: `Write a poem about a cat to a beat with duration of ${duration}`,
+  
+});
 
       const generatedLyrics = completion.data.choices[0].text;
 
