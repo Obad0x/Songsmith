@@ -12,8 +12,7 @@ dotenv.config();
 const essentia = new Essentia(EssentiaWASM);
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+  apiKey: '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'})
 const openai = new OpenAIApi(configuration);
 
 const port = process.env.PORT || 3000;
