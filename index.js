@@ -5,6 +5,7 @@ import fs from "fs";
 import decode from "audio-decode";
 import dotenv from "dotenv";
 import {Configuration , OpenAIApi } from  'openai' 
+import { Console } from "console";
 
 
 const app = express();
@@ -82,7 +83,8 @@ app.post("/uploads/beat", upload.single("audio"), async (req, res) => {
       const generatedLyrics = completion.data.choices[0].text;
 
       // Rendering the EJS template with generated lyrics
-      res.render("index.ejs", { lyrics: generatedLyrics });
+      res.render("index.ejs",generatedLyrics);
+      console.log(generatedLyrics)
     } catch (error) {
       console.log(error);
       res.status(500).send("Error while processing with OpenAI.");
