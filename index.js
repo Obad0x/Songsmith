@@ -4,8 +4,8 @@ import { Essentia, EssentiaWASM } from "essentia.js";
 import fs from "fs";
 import decode from "audio-decode";
 import dotenv from "dotenv";
-import {Configuration , OpenAIApi } from  'openai' 
-import { Console } from "console";
+import OpenAI from 'openai';
+
 
 
 const app = express();
@@ -14,11 +14,11 @@ dotenv.config();
 const essentia = new Essentia(EssentiaWASM);
 
 
-const configuration = new Configuration({
+const openai= new OpenAI({
   apiKey: process.env.API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
+
 
 
 const port = process.env.PORT || 3000;
