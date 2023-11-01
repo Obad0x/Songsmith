@@ -73,12 +73,12 @@ app.post("/uploads/beat", upload.single("audio"), async (req, res) => {
     const duration = essentia.Duration(data).duration;
     const energy = essentia.Energy(data).energy;
 
-    try {
+         try {
       const completion = await api.createCompletion({
-  model: 'text-davinci-003',
-  prompt: `Write a poem about a cat to a beat with duration of ${duration}`,
+      model: 'text-davinci-003',
+       prompt: `Write a poem about a cat to a beat with duration of ${duration}`,
   
-});
+  });
 
       const generatedLyrics = completion.data.choices[0].text;
 
