@@ -98,3 +98,6 @@ app.post("/uploads/beat", upload.single("audio"), async (req, res) => {
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
+
+
+// Still buggy as f**ck
